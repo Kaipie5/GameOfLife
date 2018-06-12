@@ -9,9 +9,9 @@ public class GameOfLife {
 
     
     //Constants
-    static int BOARDHEIGHT = 30;
-    static int BOARDWIDTH = 100;
-    static double STARTWEIGHT = 0.30;
+    static int BOARD_HEIGHT = 30;
+    static int BOARD_WIDTH = 100;
+    static double START_WEIGHT = 0.30;
     static int EXPOSURE = 2;
     static int OVERCROWD = 3;
     static int PAUSE_MILLIS = 100;
@@ -19,29 +19,29 @@ public class GameOfLife {
     public static void main(String[] args) {
         
         boolean[][] board = initBoard();
-        printBoard(board);
         
         while (true) {
+            String boardString = printBoard(board);
+            System.out.println(boardString);
             try {
                 Thread.sleep(PAUSE_MILLIS);
             } catch (InterruptedException e) {
 
             }
-            board = nextState(board);
-            printBoard(board);
+            board = calculateNextState(board);
         }
     }
     
     private static boolean[][] initBoard() {
         //buffer of 1 around entirety of 2d array
-        boolean[][] board = new boolean[BOARDHEIGHT + 1][BOARDWIDTH + 1];
-        for (int row = 1; row < BOARDHEIGHT; row++){
+        boolean[][] board = new boolean[BOARD_HEIGHT + 1][BOARD_WIDTH + 1];
+        for (int row = 1; row < BOARD_HEIGHT; row++){
             
-            for (int col = 1; col < BOARDWIDTH; col++) {
+            for (int col = 1; col < BOARD_WIDTH; col++) {
                 
                 double rand = Math.random();
                 
-                if (rand <= STARTWEIGHT) {
+                if (rand <= START_WEIGHT) {
                     board[row][col] = true;
                 }
             }
@@ -49,7 +49,7 @@ public class GameOfLife {
         return board;
     }
     
-    private static int calculateAliveNeighbors(boolean[][] board, int rowIndex, int colIndex) {
+    private static int calculateAliveNeighborsOfCurrentCell(boolean[][] board, int rowIndex, int colIndex) {
         int numAlive = 0;
         for (int row = rowIndex - 1; row <= rowIndex + 1; row++) {
             
@@ -65,60 +65,63 @@ public class GameOfLife {
         return numAlive;
     }
     
-    private static boolean calculateAliveOrDead(boolean[][] board, int row, int col) {
+    private static boolean calculateNextStateOfCell(boolean[][] board, int row, int col) {
         
-        int numAlive = calculateAliveNeighbors(board, row, col);
+        int numAlive = calculateAliveNeighborsOfCurrentCell(board, row, col);
         
-        if (numAlive < EXPOSURE && board[row][col]) {
-            return false;
-        }
-        if (numAlive > OVERCROWD && board[row][col]) {
-            return false;
-        }
         if (numAlive == OVERCROWD && !board[row][col]) {
             return true;
-        }
-        if (numAlive >= EXPOSURE && numAlive <= OVERCROWD && board[row][col]) {
+        } else if (numAlive >= EXPOSURE && numAlive <= OVERCROWD && board[row][col]) {
             return true;
         } else {
             return false;
         }
         
+//        if (numAlive < EXPOSURE && board[row][col]) {
+//            return false;
+//        }
+//        if (numAlive > OVERCROWD && board[row][col]) {
+//            return false;
+//        }
+        
+        
     }
     
-    private static boolean[][] nextState(boolean[][] board) {
-        boolean[][] newState = new boolean[BOARDHEIGHT + 1][BOARDWIDTH + 1];
+    private static boolean[][] calculateNextState(boolean[][] board) {
+        boolean[][] newState = new boolean[BOARD_HEIGHT + 1][BOARD_WIDTH + 1];
         
-        for (int row = 1; row < BOARDHEIGHT; row++) {
+        for (int row = 1; row < BOARD_HEIGHT; row++) {
             
-            for (int col = 1; col < BOARDWIDTH; col++) {
+            for (int col = 1; col < BOARD_WIDTH; col++) {
                 
-                newState[row][col] = calculateAliveOrDead(board, row, col);
+                newState[row][col] = calculateNextStateOfCell(board, row, col);
                 
             }   
         }
         return newState;
     }
     
-    private static void printBoard(boolean[][] board) {
-        for (int row = 1; row < BOARDHEIGHT; row++) {
+    private static String printBoard(boolean[][] board) {
+        String boardString = "";
+        for (int row = 1; row < BOARD_HEIGHT; row++) {
             
-            for (int col = 1; col < BOARDWIDTH; col++) {
+            for (int col = 1; col < BOARD_WIDTH; col++) {
                 
                 if (board[row][col]) {
-                    System.out.print("*");
+                    boardString += "*";
                 } else {
-                    System.out.print(" ");
+                    boardString += " ";
                 }
             }
-            System.out.println("");
+            boardString += "\n";
         }
         
-        for (int col = 1; col < BOARDWIDTH; col++) {
-            System.out.print("-");
+        for (int col = 1; col < BOARD_WIDTH; col++) {
+            boardString += "-";
         }
         
-        System.out.println("");
+        boardString += "\n";
+        return boardString;
     }
     
     

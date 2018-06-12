@@ -14,15 +14,14 @@ public class GameOfLife {
     static double STARTWEIGHT = 0.30;
     static int EXPOSURE = 2;
     static int OVERCROWD = 3;
-    static int PAUSE_MILLIS = 100;
+    static int PAUSE_MILLIS = 1000;
 
     public static void main(String[] args) {
-        // TODO code application logic here
+        
         boolean[][] board = initBoard();
         printBoard(board);
         
-        int x = 0;
-        while (x < 10) {
+        while (true) {
             try {
                 Thread.sleep(PAUSE_MILLIS);
             } catch (InterruptedException e) {
@@ -30,7 +29,6 @@ public class GameOfLife {
             }
             board = nextState(board);
             printBoard(board);
-            x++;
         }
     }
     
@@ -53,9 +51,9 @@ public class GameOfLife {
     
     private static int calculateAliveNeighbors(boolean[][] board, int rowIndex, int colIndex) {
         int numAlive = 0;
-        for (int row = rowIndex - 1; row < rowIndex + 1; row++) {
+        for (int row = rowIndex - 1; row <= rowIndex + 1; row++) {
             
-            for (int col = colIndex - 1; col < colIndex + 1; col++) {
+            for (int col = colIndex - 1; col <= colIndex + 1; col++) {
                 
                 if (row == rowIndex && col == colIndex) continue;
                 

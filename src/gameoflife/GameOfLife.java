@@ -14,14 +14,23 @@ public class GameOfLife {
     static double STARTWEIGHT = 0.30;
     static int EXPOSURE = 2;
     static int OVERCROWD = 3;
+    static int PAUSE_MILLIS = 100;
 
     public static void main(String[] args) {
         // TODO code application logic here
         boolean[][] board = initBoard();
         printBoard(board);
-        while (true) {
+        
+        int x = 0;
+        while (x < 10) {
+            try {
+                Thread.sleep(PAUSE_MILLIS);
+            } catch (InterruptedException e) {
+
+            }
             board = nextState(board);
             printBoard(board);
+            x++;
         }
     }
     
@@ -90,6 +99,10 @@ public class GameOfLife {
             }
             System.out.println("");
         }
+        for (int row = 1; row < BOARDHEIGHT; row++) {
+            System.out.print("-");
+        }
+        System.out.println("");
     }
     
     

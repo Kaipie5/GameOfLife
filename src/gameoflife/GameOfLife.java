@@ -88,17 +88,23 @@ public class GameOfLife {
     
     private static boolean[][] nextState(boolean[][] board) {
         boolean[][] newState = new boolean[BOARDHEIGHT + 1][BOARDWIDTH + 1];
+        
         for (int row = 1; row < BOARDHEIGHT; row++) {
+            
             for (int col = 1; col < BOARDWIDTH; col++) {
+                
                 newState[row][col] = calculateAliveOrDead(board, row, col);
-            }
+                
+            }   
         }
         return newState;
     }
     
     private static void printBoard(boolean[][] board) {
         for (int row = 1; row < BOARDHEIGHT; row++) {
+            
             for (int col = 1; col < BOARDWIDTH; col++) {
+                
                 if (board[row][col]) {
                     System.out.print("*");
                 } else {
@@ -107,9 +113,11 @@ public class GameOfLife {
             }
             System.out.println("");
         }
+        
         for (int col = 1; col < BOARDWIDTH; col++) {
             System.out.print("-");
         }
+        
         System.out.println("");
     }
     

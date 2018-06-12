@@ -13,7 +13,7 @@ public class GameOfLife {
     //Constants
     static int BOARD_HEIGHT = 30;
     static int BOARD_WIDTH = 100;
-    static double START_WEIGHT = 0.30;
+    static double LIFE_LIKELIHOOD_FOR_CELL = 0.30;
     static int EXPOSURE = 2;
     static int OVERCROWD = 3;
     static int PAUSE_MILLIS = 100;
@@ -65,7 +65,7 @@ public class GameOfLife {
                 
                 double rand = Math.random();
                 
-                if (rand <= START_WEIGHT) {
+                if (rand <= LIFE_LIKELIHOOD_FOR_CELL) {
                     board[row][col] = true;
                 }
             }

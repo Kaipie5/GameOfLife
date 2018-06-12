@@ -9,8 +9,8 @@ public class GameOfLife {
 
     
     //Constants
-    static int BOARDHEIGHT = 20;
-    static int BOARDWIDTH = 20;
+    static int BOARDHEIGHT = 50;
+    static int BOARDWIDTH = 50;
     static double STARTWEIGHT = 0.30;
     static int EXPOSURE = 2;
     static int OVERCROWD = 3;
@@ -73,12 +73,17 @@ public class GameOfLife {
         
         if (numAlive < EXPOSURE && board[row][col]) {
             return false;
-        } else if (numAlive > OVERCROWD && board[row][col]) {
+        }
+        if (numAlive > OVERCROWD && board[row][col]) {
             return false;
-        } else if (numAlive == OVERCROWD && !board[row][col]) {
+        }
+        if (numAlive == OVERCROWD && !board[row][col]) {
+            return true;
+        }
+        if (numAlive >= EXPOSURE && numAlive <= OVERCROWD && board[row][col]) {
             return true;
         } else {
-            return true;
+            return false;
         }
         
     }

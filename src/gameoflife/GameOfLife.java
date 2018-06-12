@@ -1,6 +1,8 @@
 
 package gameoflife;
 
+import java.util.Arrays;
+
 /**
  *
  * @author kaimcconnell
@@ -19,16 +21,38 @@ public class GameOfLife {
     public static void main(String[] args) {
         
         boolean[][] board = initBoard();
+        boolean[][] previousBoard = board;
+        boolean[][] oldestBoard = board;
         
-        while (true) {
-            String boardString = printBoard(board);
+        int stabilityTimer = 0;
+        boolean notStable = true;
+        
+        while (notStable) {
+            String boardString = generateBoardString(board);
             System.out.println(boardString);
+            
             try {
                 Thread.sleep(PAUSE_MILLIS);
             } catch (InterruptedException e) {
 
             }
+            
+            oldestBoard = previousBoard;
+            previousBoard = board;
             board = calculateNextState(board);
+            
+            if (stabilityTimer >= 3) {
+                
+                if (Arrays.deepEquals(board, previousBoard) || Arrays.deepEquals(board, oldestBoard)) {
+                    
+                    notStable = false;
+                    System.out.println("STABLE");
+                    
+                }
+            }
+            
+            stabilityTimer++;
+            
         }
     }
     
@@ -75,16 +99,7 @@ public class GameOfLife {
             return true;
         } else {
             return false;
-        }
-        
-//        if (numAlive < EXPOSURE && board[row][col]) {
-//            return false;
-//        }
-//        if (numAlive > OVERCROWD && board[row][col]) {
-//            return false;
-//        }
-        
-        
+        }      
     }
     
     private static boolean[][] calculateNextState(boolean[][] board) {
@@ -101,7 +116,7 @@ public class GameOfLife {
         return newState;
     }
     
-    private static String printBoard(boolean[][] board) {
+    private static String generateBoardString(boolean[][] board) {
         String boardString = "";
         for (int row = 1; row < BOARD_HEIGHT; row++) {
             

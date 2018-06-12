@@ -80,10 +80,10 @@ public class GameOfLife {
     
     private static boolean[][] initBoard() {
         //buffer of 1 around entirety of 2d array
-        boolean[][] board = new boolean[BOARD_HEIGHT + 1][BOARD_WIDTH + 1];
-        for (int row = 1; row < BOARD_HEIGHT; row++){
+        boolean[][] board = new boolean[BOARD_HEIGHT][BOARD_WIDTH];
+        for (int row = 0; row < BOARD_HEIGHT; row++){
             
-            for (int col = 1; col < BOARD_WIDTH; col++) {
+            for (int col = 0; col < BOARD_WIDTH; col++) {
                 
                 double rand = Math.random();
                 
@@ -103,9 +103,11 @@ public class GameOfLife {
                 
                 if (row == rowIndex && col == colIndex) continue;
                 
-                if (board[row][col]) {
-                    numAlive++;
-                }
+                if (row >= 0 && col >=0 && row < BOARD_HEIGHT && col < BOARD_WIDTH) {
+                    if (board[row][col]) {
+                        numAlive++;
+                    }
+                }  
             }
         }
         return numAlive;
@@ -125,10 +127,10 @@ public class GameOfLife {
     }
     
     private static boolean[][] calculateNextState(boolean[][] board) {
-        boolean[][] newState = new boolean[BOARD_HEIGHT + 1][BOARD_WIDTH + 1];
-        for (int row = 1; row < BOARD_HEIGHT; row++) {
+        boolean[][] newState = new boolean[BOARD_HEIGHT][BOARD_WIDTH];
+        for (int row = 0; row < BOARD_HEIGHT; row++) {
             
-            for (int col = 1; col < BOARD_WIDTH; col++) {
+            for (int col = 0; col < BOARD_WIDTH; col++) {
                 
                 newState[row][col] = calculateNextStateOfCell(board, row, col);
                 
@@ -148,10 +150,10 @@ public class GameOfLife {
     }
     
     private static boolean[][] gabbaRay(boolean[][] board) {
-        boolean[][] newState = new boolean[BOARD_HEIGHT + 1][BOARD_WIDTH + 1];
-        for (int row = 1; row < BOARD_HEIGHT; row++) {
+        boolean[][] newState = new boolean[BOARD_HEIGHT][BOARD_WIDTH];
+        for (int row = 0; row < BOARD_HEIGHT; row++) {
             
-            for (int col = 1; col < BOARD_WIDTH; col++) {
+            for (int col = 0; col < BOARD_WIDTH; col++) {
                 
                 newState[row][col] = gabbaRayCalculateNextStateOfCell(board, row, col);
                 
@@ -168,7 +170,9 @@ public class GameOfLife {
         int meteorCol = (int)(Math.random() * ((max - min) + 1)) + min;
         for (int row = meteorRow - METEOR_SIZE; row <= meteorRow + METEOR_SIZE; row++) {
             for (int col = meteorCol - METEOR_SIZE; col <= meteorCol + METEOR_SIZE; col++) {
-                meteoredBoard[row][col] = false;
+                if (row >= 0 && col >=0 && row < BOARD_HEIGHT && col < BOARD_WIDTH) {
+                    meteoredBoard[row][col] = false;
+                }  
             }
         }
         return meteoredBoard;
@@ -176,9 +180,9 @@ public class GameOfLife {
         
     private static String generateBoardString(boolean[][] board) {
         String boardString = "";
-        for (int row = 1; row < BOARD_HEIGHT; row++) {
+        for (int row = 0; row < BOARD_HEIGHT; row++) {
             
-            for (int col = 1; col < BOARD_WIDTH; col++) {
+            for (int col = 0; col < BOARD_WIDTH; col++) {
                 
                 if (board[row][col]) {
                     boardString += "*";
@@ -189,7 +193,7 @@ public class GameOfLife {
             boardString += "\n";
         }
         
-        for (int col = 1; col < BOARD_WIDTH; col++) {
+        for (int col = 0; col < BOARD_WIDTH; col++) {
             boardString += "-";
         }
         

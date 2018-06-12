@@ -9,12 +9,12 @@ public class GameOfLife {
 
     
     //Constants
-    static int BOARDHEIGHT = 50;
-    static int BOARDWIDTH = 50;
+    static int BOARDHEIGHT = 30;
+    static int BOARDWIDTH = 100;
     static double STARTWEIGHT = 0.30;
     static int EXPOSURE = 2;
     static int OVERCROWD = 3;
-    static int PAUSE_MILLIS = 1000;
+    static int PAUSE_MILLIS = 100;
 
     public static void main(String[] args) {
         
@@ -107,7 +107,7 @@ public class GameOfLife {
             }
             System.out.println("");
         }
-        for (int row = 1; row < BOARDHEIGHT; row++) {
+        for (int col = 1; col < BOARDWIDTH; col++) {
             System.out.print("-");
         }
         System.out.println("");

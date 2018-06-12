@@ -12,14 +12,14 @@ public class GameOfLife {
     
     //Constants
     static int BOARD_HEIGHT = 30;
-    static int BOARD_WIDTH = 100;
+    static int BOARD_WIDTH = 115;
     static double LIFE_LIKELIHOOD_FOR_CELL = 0.30;
     static int EXPOSURE = 2;
     static int OVERCROWD = 3;
     static int PAUSE_MILLIS = 100;
-    static double GABBA_RAY_CHANCE = 0.001;
+    static double GABBA_RAY_CHANCE = 0.01;
     static boolean GABBA_RAY_ON = true;
-    static double METEOR_CHANCE = 0.01;
+    static double METEOR_CHANCE = 0.1;
     static boolean METEOR_ON = true;
     static int METEOR_SIZE = 10;
 

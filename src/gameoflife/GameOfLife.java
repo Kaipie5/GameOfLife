@@ -32,6 +32,9 @@ public class GameOfLife {
         return board;
     }
     
+    private boolean[][] nextState() {
+        return null;
+    }
     private int calculateAliveNeighbors(int row, int col) {
         return 0;
     }

@@ -18,9 +18,10 @@ public class GameOfLife {
     public static void main(String[] args) {
         // TODO code application logic here
         boolean[][] board = initBoard();
+        printBoard(board);
         while (true) {
             board = nextState(board);
-            
+            printBoard(board);
         }
     }
     
@@ -76,6 +77,19 @@ public class GameOfLife {
             }
         }
         return newState;
+    }
+    
+    private static void printBoard(boolean[][] board) {
+        for (int row = 1; row < BOARDHEIGHT; row++) {
+            for (int col = 1; col < BOARDWIDTH; col++) {
+                if (board[row][col]) {
+                    System.out.print("*");
+                } else {
+                    System.out.print(" ");
+                }
+            }
+            System.out.println("");
+        }
     }
     
     

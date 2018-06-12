@@ -17,6 +17,11 @@ public class GameOfLife {
     static int EXPOSURE = 2;
     static int OVERCROWD = 3;
     static int PAUSE_MILLIS = 100;
+    static double GABBA_RAY_CHANCE = 0.001;
+    static boolean GABBA_RAY_ON = true;
+    static double METEOR_CHANCE = 0.01;
+    static boolean METEOR_ON = true;
+    static int METEOR_SIZE = 10;
 
     public static void main(String[] args) {
         
@@ -92,19 +97,34 @@ public class GameOfLife {
     private static boolean calculateNextStateOfCell(boolean[][] board, int row, int col) {
         
         int numAlive = calculateAliveNeighborsOfCurrentCell(board, row, col);
-        
+        double rand = Math.random();
         if (numAlive == OVERCROWD && !board[row][col]) {
             return true;
         } else if (numAlive >= EXPOSURE && numAlive <= OVERCROWD && board[row][col]) {
+            return true;
+        } else if (GABBA_RAY_ON && rand <= GABBA_RAY_CHANCE && !board[row][col]) {
             return true;
         } else {
             return false;
         }      
     }
     
+    private static boolean[][] meteorStrike(boolean[][] board) {
+        boolean[][] meteoredBoard = board;
+        int max = (BOARD_HEIGHT - METEOR_SIZE);
+        int min = (1 + METEOR_SIZE);
+        int meteorRow = (int)(Math.random() * ((max - min) + 1)) + min;
+        int meteorCol = (int)(Math.random() * ((max - min) + 1)) + min;
+        for (int row = meteorRow - METEOR_SIZE; row <= meteorRow + METEOR_SIZE; row++) {
+            for (int col = meteorCol - METEOR_SIZE; col <= meteorCol + METEOR_SIZE; col++) {
+                meteoredBoard[row][col] = false;
+            }
+        }
+        return meteoredBoard;
+    }
+    
     private static boolean[][] calculateNextState(boolean[][] board) {
         boolean[][] newState = new boolean[BOARD_HEIGHT + 1][BOARD_WIDTH + 1];
-        
         for (int row = 1; row < BOARD_HEIGHT; row++) {
             
             for (int col = 1; col < BOARD_WIDTH; col++) {
@@ -112,6 +132,11 @@ public class GameOfLife {
                 newState[row][col] = calculateNextStateOfCell(board, row, col);
                 
             }   
+        }
+        double rand = Math.random();
+        if (rand <= METEOR_CHANCE) {
+            System.out.println("METEORSTRIKE");
+            newState = meteorStrike(newState);
         }
         return newState;
     }

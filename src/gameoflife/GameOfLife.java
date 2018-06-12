@@ -15,18 +15,17 @@ public class GameOfLife {
 
     public static void main(String[] args) {
         // TODO code application logic here
+        boolean[][] board = initBoard();
     }
     
-    private boolean[][] initBoard() {
+    private static boolean[][] initBoard() {
         //buffer of 1 around entirety of 2d array
         boolean[][] board = new boolean[BOARDHEIGHT + 1][BOARDWIDTH + 1];
         for (int row = 1; row < BOARDHEIGHT; row++){
             for (int col = 1; col < BOARDWIDTH; col++) {
                 double rand = Math.random();
-                if (rand < STARTWEIGHT) {
+                if (rand <= STARTWEIGHT) {
                     board[row][col] = true;
-                } else {
-                    board[row][col] = false;
                 }
             }
         }

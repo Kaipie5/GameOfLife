@@ -24,8 +24,11 @@ public class GameOfLife {
         //buffer of 1 around entirety of 2d array
         boolean[][] board = new boolean[BOARDHEIGHT + 1][BOARDWIDTH + 1];
         for (int row = 1; row < BOARDHEIGHT; row++){
+            
             for (int col = 1; col < BOARDWIDTH; col++) {
+                
                 double rand = Math.random();
+                
                 if (rand <= STARTWEIGHT) {
                     board[row][col] = true;
                 }
@@ -34,14 +37,14 @@ public class GameOfLife {
         return board;
     }
     
-    private boolean[][] nextState(boolean[][] board) {
-        return null;
-    }
     private int calculateAliveNeighbors(boolean[][] board, int rowIndex, int colIndex) {
         int numAlive = 0;
         for (int row = rowIndex - 1; row < rowIndex + 1; row++) {
+            
             for (int col = colIndex - 1; col < colIndex + 1; col++) {
+                
                 if (row == rowIndex && col == colIndex) continue;
+                
                 if (board[row][col]) {
                     numAlive++;
                 }
@@ -51,12 +54,19 @@ public class GameOfLife {
     }
     
     private boolean calculateAliveOrDead(boolean[][] board, int row, int col) {
+        
         int numAlive = calculateAliveNeighbors(board, row, col);
+        
         if (numAlive >= EXPOSURE && numAlive <= OVERCROWD) {
             return true;
         } else {
             return false;
         }
+    }
+    
+    private boolean[][] nextState(boolean[][] board) {
+        
+        return null;
     }
     
     

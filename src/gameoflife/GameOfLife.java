@@ -32,14 +32,21 @@ public class GameOfLife {
         return board;
     }
     
-    private boolean[][] nextState() {
+    private boolean[][] nextState(boolean[][] board) {
         return null;
     }
-    private int calculateAliveNeighbors(int row, int col) {
+    private int calculateAliveNeighbors(boolean[][] board, int rowIndex, int colIndex) {
+        int numAlive = 0;
+        for (int row = rowIndex - 1; row < rowIndex + 1; row++) {
+            for (int col = colIndex - 1; col < colIndex + 1; col++) {
+                if (row == rowIndex && col == colIndex) continue;
+                
+            }
+        }
         return 0;
     }
     
-    private boolean calculateAliveOrDead(int row, int col) {
+    private boolean calculateAliveOrDead(boolean[][] board, int row, int col) {
         return true;
     }
     

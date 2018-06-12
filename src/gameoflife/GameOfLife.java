@@ -9,16 +9,23 @@ import java.util.Arrays;
  */
 public class GameOfLife {
 
+    //Remove buffer on board (also remove buffer for meteor)
     
     //Constants
     static int BOARD_HEIGHT = 30;
     static int BOARD_WIDTH = 115;
+    
     static double LIFE_LIKELIHOOD_FOR_CELL = 0.30;
+    
     static int EXPOSURE = 2;
     static int OVERCROWD = 3;
+    
     static int PAUSE_MILLIS = 100;
+    
+    
     static double GABBA_RAY_CHANCE = 0.01;
     static boolean GABBA_RAY_ON = true;
+    
     static double METEOR_CHANCE = 0.1;
     static boolean METEOR_ON = true;
     static int METEOR_SIZE = 10;
@@ -27,7 +34,7 @@ public class GameOfLife {
         
         boolean[][] board = initBoard();
         boolean[][] previousBoard = board;
-        boolean[][] oldestBoard = board;
+        boolean[][] antepenultimateBoard = board;
         
         int stabilityTimer = 0;
         boolean notStable = true;
@@ -42,13 +49,23 @@ public class GameOfLife {
 
             }
             
-            oldestBoard = previousBoard;
+            antepenultimateBoard = previousBoard;
             previousBoard = board;
             board = calculateNextState(board);
             
+            if (GABBA_RAY_ON) {
+                board = gabbaRay(board);
+            }
+            
+            double rand = Math.random();
+            if (rand <= METEOR_CHANCE) {
+                System.out.println("METEORSTRIKE");
+                board = meteorStrike(board);
+            }
+            
             if (stabilityTimer >= 3) {
                 
-                if (Arrays.deepEquals(board, previousBoard) || Arrays.deepEquals(board, oldestBoard)) {
+                if (Arrays.deepEquals(board, previousBoard) || Arrays.deepEquals(board, antepenultimateBoard)) {
                     
                     notStable = false;
                     System.out.println("STABLE");
@@ -97,16 +114,36 @@ public class GameOfLife {
     private static boolean calculateNextStateOfCell(boolean[][] board, int row, int col) {
         
         int numAlive = calculateAliveNeighborsOfCurrentCell(board, row, col);
-        double rand = Math.random();
+        
         if (numAlive == OVERCROWD && !board[row][col]) {
             return true;
         } else if (numAlive >= EXPOSURE && numAlive <= OVERCROWD && board[row][col]) {
             return true;
-        } else if (GABBA_RAY_ON && rand <= GABBA_RAY_CHANCE && !board[row][col]) {
-            return true;
-        } else {
+        }  else {
             return false;
         }      
+    }
+    
+    private static boolean gabbaRayCalculateNextStateOfCell(boolean[][] board, int row, int col) {
+        double rand = Math.random();
+        if (GABBA_RAY_ON && rand <= GABBA_RAY_CHANCE && !board[row][col]) {
+            return true;
+        } else {
+            return board[row][col];
+        }
+    }
+    
+    private static boolean[][] gabbaRay(boolean[][] board) {
+        boolean[][] newState = new boolean[BOARD_HEIGHT + 1][BOARD_WIDTH + 1];
+        for (int row = 1; row < BOARD_HEIGHT; row++) {
+            
+            for (int col = 1; col < BOARD_WIDTH; col++) {
+                
+                newState[row][col] = gabbaRayCalculateNextStateOfCell(board, row, col);
+                
+            }   
+        }
+        return newState;
     }
     
     private static boolean[][] meteorStrike(boolean[][] board) {
@@ -133,11 +170,7 @@ public class GameOfLife {
                 
             }   
         }
-        double rand = Math.random();
-        if (rand <= METEOR_CHANCE) {
-            System.out.println("METEORSTRIKE");
-            newState = meteorStrike(newState);
-        }
+        
         return newState;
     }
     

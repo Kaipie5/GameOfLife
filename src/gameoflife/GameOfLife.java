@@ -12,7 +12,7 @@ public class GameOfLife {
     //Remove buffer on board (also remove buffer for meteor)
     
     //Constants
-    static int BOARD_HEIGHT = 30;
+    static int BOARD_HEIGHT = 25;
     static int BOARD_WIDTH = 115;
     
     static double LIFE_LIKELIHOOD_FOR_CELL = 0.30;
@@ -24,9 +24,9 @@ public class GameOfLife {
     
     
     static double GABBA_RAY_CHANCE = 0.01;
-    static boolean GABBA_RAY_ON = true;
+    static boolean GABBA_RAY_ON = false;
     
-    static double METEOR_CHANCE = 0.1;
+    static double METEOR_CHANCE = 0.01;
     static boolean METEOR_ON = true;
     static int METEOR_SIZE = 10;
 
@@ -164,10 +164,8 @@ public class GameOfLife {
     
     private static boolean[][] meteorStrike(boolean[][] board) {
         boolean[][] meteoredBoard = board;
-        int max = (BOARD_HEIGHT - METEOR_SIZE);
-        int min = (1 + METEOR_SIZE);
-        int meteorRow = (int)(Math.random() * ((max - min) + 1)) + min;
-        int meteorCol = (int)(Math.random() * ((max - min) + 1)) + min;
+        int meteorRow = (int)(Math.random() * ((BOARD_HEIGHT) + 1));
+        int meteorCol = (int)(Math.random() * ((BOARD_HEIGHT) + 1));
         for (int row = meteorRow - METEOR_SIZE; row <= meteorRow + METEOR_SIZE; row++) {
             for (int col = meteorCol - METEOR_SIZE; col <= meteorCol + METEOR_SIZE; col++) {
                 if (row >= 0 && col >=0 && row < BOARD_HEIGHT && col < BOARD_WIDTH) {

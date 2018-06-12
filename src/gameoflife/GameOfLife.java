@@ -12,6 +12,8 @@ public class GameOfLife {
     static int BOARDHEIGHT = 20;
     static int BOARDWIDTH = 20;
     static double STARTWEIGHT = 0.30;
+    static int EXPOSURE = 2;
+    static int OVERCROWD = 3;
 
     public static void main(String[] args) {
         // TODO code application logic here
@@ -49,7 +51,12 @@ public class GameOfLife {
     }
     
     private boolean calculateAliveOrDead(boolean[][] board, int row, int col) {
-        return true;
+        int numAlive = calculateAliveNeighbors(board, row, col);
+        if (numAlive >= EXPOSURE && numAlive <= OVERCROWD) {
+            return true;
+        } else {
+            return false;
+        }
     }
     
     

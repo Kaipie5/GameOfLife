@@ -40,10 +40,12 @@ public class GameOfLife {
         for (int row = rowIndex - 1; row < rowIndex + 1; row++) {
             for (int col = colIndex - 1; col < colIndex + 1; col++) {
                 if (row == rowIndex && col == colIndex) continue;
-                
+                if (board[row][col]) {
+                    numAlive++;
+                }
             }
         }
-        return 0;
+        return numAlive;
     }
     
     private boolean calculateAliveOrDead(boolean[][] board, int row, int col) {

@@ -65,8 +65,13 @@ public class GameOfLife {
     }
     
     private boolean[][] nextState(boolean[][] board) {
-        
-        return null;
+        boolean[][] newState = new boolean[BOARDHEIGHT + 1][BOARDWIDTH + 1];
+        for (int row = 1; row < BOARDHEIGHT; row++) {
+            for (int col = 1; col < BOARDWIDTH; col++) {
+                newState[row][col] = calculateAliveOrDead(board, row, col);
+            }
+        }
+        return newState;
     }
     
     

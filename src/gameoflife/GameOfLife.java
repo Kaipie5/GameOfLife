@@ -71,11 +71,16 @@ public class GameOfLife {
         
         int numAlive = calculateAliveNeighbors(board, row, col);
         
-        if (numAlive >= EXPOSURE && numAlive <= OVERCROWD) {
+        if (numAlive < EXPOSURE && board[row][col]) {
+            return false;
+        } else if (numAlive > OVERCROWD && board[row][col]) {
+            return false;
+        } else if (numAlive == OVERCROWD && !board[row][col]) {
             return true;
         } else {
-            return false;
+            return true;
         }
+        
     }
     
     private static boolean[][] nextState(boolean[][] board) {

@@ -17,4 +17,18 @@ public class GameOfLife {
         // TODO code application logic here
     }
     
+    private boolean[][] initBoard() {
+        return null;
+    }
+    
+    private int calculateAliveNeighbors(int row, int col) {
+        return 0;
+    }
+    
+    private boolean calculateAliveOrDead(int row, int col) {
+        return true;
+    }
+    
+    
+    
 }

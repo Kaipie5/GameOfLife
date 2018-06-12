@@ -18,7 +18,19 @@ public class GameOfLife {
     }
     
     private boolean[][] initBoard() {
-        return null;
+        //buffer of 1 around entirety of 2d array
+        boolean[][] board = new boolean[BOARDHEIGHT + 1][BOARDWIDTH + 1];
+        for (int row = 1; row < BOARDHEIGHT; row++){
+            for (int col = 1; col < BOARDWIDTH; col++) {
+                double rand = Math.random();
+                if (rand < STARTWEIGHT) {
+                    board[row][col] = true;
+                } else {
+                    board[row][col] = false;
+                }
+            }
+        }
+        return board;
     }
     
     private int calculateAliveNeighbors(int row, int col) {

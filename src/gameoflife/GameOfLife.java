@@ -18,6 +18,10 @@ public class GameOfLife {
     public static void main(String[] args) {
         // TODO code application logic here
         boolean[][] board = initBoard();
+        while (true) {
+            board = nextState(board);
+            
+        }
     }
     
     private static boolean[][] initBoard() {
@@ -37,7 +41,7 @@ public class GameOfLife {
         return board;
     }
     
-    private int calculateAliveNeighbors(boolean[][] board, int rowIndex, int colIndex) {
+    private static int calculateAliveNeighbors(boolean[][] board, int rowIndex, int colIndex) {
         int numAlive = 0;
         for (int row = rowIndex - 1; row < rowIndex + 1; row++) {
             
@@ -53,7 +57,7 @@ public class GameOfLife {
         return numAlive;
     }
     
-    private boolean calculateAliveOrDead(boolean[][] board, int row, int col) {
+    private static boolean calculateAliveOrDead(boolean[][] board, int row, int col) {
         
         int numAlive = calculateAliveNeighbors(board, row, col);
         
@@ -64,7 +68,7 @@ public class GameOfLife {
         }
     }
     
-    private boolean[][] nextState(boolean[][] board) {
+    private static boolean[][] nextState(boolean[][] board) {
         boolean[][] newState = new boolean[BOARDHEIGHT + 1][BOARDWIDTH + 1];
         for (int row = 1; row < BOARDHEIGHT; row++) {
             for (int col = 1; col < BOARDWIDTH; col++) {
@@ -73,7 +77,6 @@ public class GameOfLife {
         }
         return newState;
     }
-    
     
     
 }

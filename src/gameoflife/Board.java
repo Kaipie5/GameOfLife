@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * @author kaimcconnell
  */
 public class Board {
-    private ArrayList<Cell> cells;
+    private Cell[][] cells;
     private int height;
     private int width;
     
@@ -21,11 +21,11 @@ public class Board {
         this.width = width;
     }
 
-    public ArrayList<Cell> getCells() {
+    public Cell[][] getCells() {
         return cells;
     }
 
-    public void setCells(ArrayList<Cell> cells) {
+    public void setCells(Cell[][] cells) {
         this.cells = cells;
     }
 
@@ -52,6 +52,7 @@ public class Board {
         return null;
     }
     private int calculateAliveNeighborsOfCurrentCell(int row, int col) {
+        
         return 0;
     }
     private static boolean calculateNextStateOfCell(boolean[][] board, int row, int col) {

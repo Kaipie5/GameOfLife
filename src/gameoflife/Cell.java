@@ -5,6 +5,8 @@
  */
 package gameoflife;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author kaimcconnell
@@ -12,12 +14,16 @@ package gameoflife;
 public class Cell {
     private boolean alive;
     private Coordinate location;
-    private final Coordinate[] neighbors;
-    public Cell(Coordinate location) {
-        neighbors = new Coordinate[8];
-        populateNeighbors();
+    private final ArrayList<Coordinate> neighbors;
+    private final int height;
+    private final int width;
+    public Cell(Coordinate location, int height, int width) {
+        this.height = height;
+        this.width = width;
+        neighbors = new ArrayList<>();
         this.location = location;
         alive = false;
+        populateNeighbors();
     }
 
     public boolean isAlive() {
@@ -43,22 +49,22 @@ public class Cell {
     }
     
     private void populateNeighbors() {
-        int index = 0;
         for (int row = -1; row <= 1; row++) {
             for (int col = -1; col <= 1; col++) {
                 
                 if (row == location.getXCoord() && col == location.getYCoord()) continue;
+                if ((location.getXCoord() + row) < 0 || (location.getYCoord() + col) < 0 
+                        || (location.getXCoord() + row) >  height|| (location.getYCoord() + col) > width) continue;
                 
-                neighbors[index] = new Coordinate(location.getXCoord() + row, location.getYCoord() + col);
-                index++;
+                neighbors.add(new Coordinate(location.getXCoord() + row, location.getYCoord() + col));
             }
         }
     }
     
     public int calculateAliveNeighbors(Board board) { 
         int numAlive = 0;
-        for (int index = 0; index < 8; index++) {
-            if (board.getCells()[neighbors[index].getXCoord()][neighbors[index].getYCoord()].isAlive()) {
+        for (int index = 0; index < neighbors.size(); index++) {
+            if (board.getCells()[neighbors.get(index).getXCoord()][neighbors.get(index).getYCoord()].isAlive()) {
                 numAlive++;
             }
         }

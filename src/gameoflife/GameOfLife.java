@@ -17,14 +17,14 @@ public class GameOfLife {
     
     static double LIFE_LIKELIHOOD_FOR_CELL = 0.30;
     
-    static int EXPOSURE = 2;
-    static int OVERCROWD = 3;
+    public static int EXPOSURE = 2;
+    public static int OVERCROWD = 3;
     
     static int PAUSE_MILLIS = 100;
     
     
-    static double GABBA_RAY_CHANCE = 0.01;
-    static boolean GABBA_RAY_ON = false;
+    static double GABBA_RAY_CHANCE = 0.001;
+    static boolean GABBA_RAY_ON = true;
     
     static double METEOR_CHANCE = 0.01;
     static boolean METEOR_ON = true;
@@ -32,15 +32,15 @@ public class GameOfLife {
 
     public static void main(String[] args) {
         
-        boolean[][] board = initBoard();
-        boolean[][] previousBoard = board;
-        boolean[][] antepenultimateBoard = board;
+        Board board = new Board(BOARD_HEIGHT, BOARD_WIDTH, LIFE_LIKELIHOOD_FOR_CELL);
+        Board previousBoard = new Board(BOARD_HEIGHT, BOARD_WIDTH, LIFE_LIKELIHOOD_FOR_CELL);
+        Board antepenultimateBoard = new Board(BOARD_HEIGHT, BOARD_WIDTH, LIFE_LIKELIHOOD_FOR_CELL);
         
         int stabilityTimer = 0;
         boolean notStable = true;
         
         while (notStable) {
-            String boardString = generateBoardString(board);
+            String boardString = board.generateBoardString();
             System.out.println(boardString);
             
             try {
@@ -49,23 +49,23 @@ public class GameOfLife {
 
             }
             
-            antepenultimateBoard = previousBoard;
-            previousBoard = board;
-            board = calculateNextState(board);
+            antepenultimateBoard.setCells(previousBoard.getCells());
+            previousBoard.setCells(board.getCells());
+            board.calculateNextState();
             
             if (GABBA_RAY_ON) {
-                board = gabbaRay(board);
+                board.gabbaRay();
             }
             
             double rand = Math.random();
             if (rand <= METEOR_CHANCE) {
                 System.out.println("METEORSTRIKE");
-                board = meteorStrike(board);
+                board.meteorStrike();
             }
             
             if (stabilityTimer >= 3) {
                 
-                if (Arrays.deepEquals(board, previousBoard) || Arrays.deepEquals(board, antepenultimateBoard)) {
+                if (board.boardCompare(previousBoard) || board.boardCompare(antepenultimateBoard)) {
                     
                     notStable = false;
                     System.out.println("STABLE");
@@ -76,126 +76,6 @@ public class GameOfLife {
             stabilityTimer++;
             
         }
-    }
-    
-    private static boolean[][] initBoard() {
-        boolean[][] board = new boolean[BOARD_HEIGHT][BOARD_WIDTH];
-        for (int row = 0; row < BOARD_HEIGHT; row++){
-            
-            for (int col = 0; col < BOARD_WIDTH; col++) {
-                
-                double rand = Math.random();
-                
-                if (rand <= LIFE_LIKELIHOOD_FOR_CELL) {
-                    board[row][col] = true;
-                }
-            }
-        }
-        return board;
-    }
-    
-    private static int calculateAliveNeighborsOfCurrentCell(boolean[][] board, int rowIndex, int colIndex) {
-        int numAlive = 0;
-        for (int row = rowIndex - 1; row <= rowIndex + 1; row++) {
-            
-            for (int col = colIndex - 1; col <= colIndex + 1; col++) {
-                
-                if (row == rowIndex && col == colIndex) continue;
-                
-                if (row >= 0 && col >=0 && row < BOARD_HEIGHT && col < BOARD_WIDTH) {
-                    if (board[row][col]) {
-                        numAlive++;
-                    }
-                }  
-            }
-        }
-        return numAlive;
-    }
-    
-    private static boolean calculateNextStateOfCell(boolean[][] board, int row, int col) {
-        
-        int numAlive = calculateAliveNeighborsOfCurrentCell(board, row, col);
-        
-        if (numAlive == OVERCROWD && !board[row][col]) {
-            return true;
-        } else if (numAlive >= EXPOSURE && numAlive <= OVERCROWD && board[row][col]) {
-            return true;
-        }  else {
-            return false;
-        }      
-    }
-    
-    private static boolean[][] calculateNextState(boolean[][] board) {
-        boolean[][] newState = new boolean[BOARD_HEIGHT][BOARD_WIDTH];
-        for (int row = 0; row < BOARD_HEIGHT; row++) {
-            
-            for (int col = 0; col < BOARD_WIDTH; col++) {
-                
-                newState[row][col] = calculateNextStateOfCell(board, row, col);
-                
-            }   
-        }
-        
-        return newState;
-    }
-    
-    private static boolean gabbaRayCalculateNextStateOfCell(boolean[][] board, int row, int col) {
-        double rand = Math.random();
-        if (GABBA_RAY_ON && rand <= GABBA_RAY_CHANCE && !board[row][col]) {
-            return true;
-        } else {
-            return board[row][col];
-        }
-    }
-    
-    private static boolean[][] gabbaRay(boolean[][] board) {
-        boolean[][] newState = new boolean[BOARD_HEIGHT][BOARD_WIDTH];
-        for (int row = 0; row < BOARD_HEIGHT; row++) {
-            
-            for (int col = 0; col < BOARD_WIDTH; col++) {
-                
-                newState[row][col] = gabbaRayCalculateNextStateOfCell(board, row, col);
-                
-            }   
-        }
-        return newState;
-    }
-    
-    private static boolean[][] meteorStrike(boolean[][] board) {
-        boolean[][] meteoredBoard = board;
-        int meteorRow = (int)(Math.random() * ((BOARD_HEIGHT) + 1));
-        int meteorCol = (int)(Math.random() * ((BOARD_HEIGHT) + 1));
-        for (int row = meteorRow - METEOR_SIZE; row <= meteorRow + METEOR_SIZE; row++) {
-            for (int col = meteorCol - METEOR_SIZE; col <= meteorCol + METEOR_SIZE; col++) {
-                if (row >= 0 && col >=0 && row < BOARD_HEIGHT && col < BOARD_WIDTH) {
-                    meteoredBoard[row][col] = false;
-                }  
-            }
-        }
-        return meteoredBoard;
-    }
-        
-    private static String generateBoardString(boolean[][] board) {
-        String boardString = "";
-        for (int row = 0; row < BOARD_HEIGHT; row++) {
-            
-            for (int col = 0; col < BOARD_WIDTH; col++) {
-                
-                if (board[row][col]) {
-                    boardString += "*";
-                } else {
-                    boardString += " ";
-                }
-            }
-            boardString += "\n";
-        }
-        
-        for (int col = 0; col < BOARD_WIDTH; col++) {
-            boardString += "-";
-        }
-        
-        boardString += "\n";
-        return boardString;
     }
     
     

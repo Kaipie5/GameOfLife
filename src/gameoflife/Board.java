@@ -13,12 +13,16 @@ import java.util.ArrayList;
  */
 public class Board {
     private Cell[][] cells;
-    private int height;
-    private int width;
+    private final int height;
+    private final int width;
+    private final int exposure;
+    private final int overcrowd;
     
-    public Board(int height, int width) {
+    public Board(int height, int width, int exposure, int overcrowd) {
         this.height = height;
         this.width = width;
+        this.exposure = exposure;
+        this.overcrowd = overcrowd;
     }
 
     public Cell[][] getCells() {
@@ -33,16 +37,8 @@ public class Board {
         return height;
     }
 
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
     public int getWidth() {
         return width;
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
     }
     
     public void initBoard() {
@@ -51,15 +47,22 @@ public class Board {
     public String generateBoardString() {
         return null;
     }
-    private int calculateAliveNeighborsOfCurrentCell(int row, int col) {
-        
-        return 0;
-    }
-    private static boolean calculateNextStateOfCell(boolean[][] board, int row, int col) {
-        return false;
+    private boolean calculateNextStateOfCell(Cell cell) {
+        int numAlive = cell.calculateAliveNeighbors(this);
+        if (numAlive == overcrowd && !cell.isAlive()) {
+            return true;
+        } else if (numAlive >= exposure && numAlive <= overcrowd && cell.isAlive()) {
+            return true;
+        }  else {
+            return false;
+        }
     } 
     public void nextState() {
-        
+        for (int row = 0; row < height; row++) {
+            for (int col = 0; col < width; col++) {
+                calculateNextStateOfCell(cells[row][col]);
+            }
+        }
     }
     private static boolean gabbaRayCalculateNextStateOfCell(int row, int col) {
         return false;

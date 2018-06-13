@@ -98,18 +98,63 @@ public class Board {
         cells = newState;
         
     }
-    private static boolean gabbaRayCalculateNextStateOfCell(int row, int col) {
-        return false;
+    private boolean gabbaRayCalculateNextStateOfCell(int row, int col) {
+        double rand = Math.random();
+        if (GABBA_RAY_ON && rand <= GABBA_RAY_CHANCE && !cells[row][col].isAlive()) {
+            return true;
+        } else {
+            return cells[row][col].isAlive();
+        }
     }
-    private Board gabbaRay() {
-        return this;
+    private void gabbaRay() {
+        Cell[][] newState = new Cell[height][width];
+        for (int row = 0; row < height; row++) {
+            
+            for (int col = 0; col < width; col++) {
+                
+                boolean aliveOrDead = gabbaRayCalculateNextStateOfCell(row, col);
+                newState[row][col].setAlive(aliveOrDead);
+                
+            }   
+        }
+        cells = newState;
     }
-    private Board meteorStrike() {
-        return this;
+    private void meteorStrike() {
+        Cell[][] meteoredBoard = new Cell[height][width];
+        int meteorRow = (int)(Math.random() * ((height) + 1));
+        int meteorCol = (int)(Math.random() * ((width) + 1));
+        for (int row = meteorRow - METEOR_SIZE; row <= meteorRow + METEOR_SIZE; row++) {
+            for (int col = meteorCol - METEOR_SIZE; col <= meteorCol + METEOR_SIZE; col++) {
+                if (row >= 0 && col >=0 && row < height && col < width) {
+                    
+                    meteoredBoard[row][col].die();
+                }  
+            }
+        }
+        cells = meteoredBoard;
     }
     
     public String generateBoardString() {
-        return null;
+        String boardString = "";
+        for (int row = 0; row < height; row++) {
+            
+            for (int col = 0; col < width; col++) {
+                
+                if (cells[row][col].isAlive()) {
+                    boardString += "*";
+                } else {
+                    boardString += " ";
+                }
+            }
+            boardString += "\n";
+        }
+        
+        for (int col = 0; col < width; col++) {
+            boardString += "-";
+        }
+        
+        boardString += "\n";
+        return boardString;
     }
     
 }

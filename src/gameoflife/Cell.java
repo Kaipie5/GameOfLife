@@ -55,4 +55,14 @@ public class Cell {
         }
     }
     
+    public int calculateAliveNeighbors(Board board) { 
+        int numAlive = 0;
+        for (int index = 0; index < 8; index++) {
+            if (board.getCells()[neighbors[index].getXCoord()][neighbors[index].getYCoord()].isAlive()) {
+                numAlive++;
+            }
+        }
+        return numAlive;
+    }
+    
 }

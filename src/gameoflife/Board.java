@@ -94,7 +94,7 @@ public class Board {
             return false;
         }
     } 
-    public Board nextState() {
+    public Board calculateNextState() {
         Board newBoard = new Board(height, width, exposure, overcrowd, lifeLikelihoodOfCell);
         for (int row = 0; row < height; row++) {
             for (int col = 0; col < width; col++) {
@@ -114,7 +114,7 @@ public class Board {
     }
     
     public Board copyBoard(Board board) {
-        
+        return null;
     }
     
 }

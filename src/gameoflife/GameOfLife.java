@@ -79,7 +79,6 @@ public class GameOfLife {
     }
     
     private static boolean[][] initBoard() {
-        //buffer of 1 around entirety of 2d array
         boolean[][] board = new boolean[BOARD_HEIGHT][BOARD_WIDTH];
         for (int row = 0; row < BOARD_HEIGHT; row++){
             

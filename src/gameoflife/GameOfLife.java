@@ -24,11 +24,11 @@ public class GameOfLife {
     
     
     static double GABBA_RAY_CHANCE = 0.001;
-    static boolean GABBA_RAY_ON = true;
+    static boolean GABBA_RAY_ON = false;
     
-    static double METEOR_CHANCE = 0.01;
+    static double METEOR_CHANCE = 0.1;
     static boolean METEOR_ON = true;
-    static int METEOR_SIZE = 10;
+    static int METEOR_SIZE = 3;
 
     public static void main(String[] args) {
         

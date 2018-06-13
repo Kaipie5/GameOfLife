@@ -17,9 +17,9 @@ public class Board {
     private final int width;
     private final int exposure;
     private final int overcrowd;
-    private final int lifeLikelihoodOfCell;
+    private final double lifeLikelihoodOfCell;
     
-    public Board(int height, int width, int exposure, int overcrowd, int lifeLikelihoodOfCell) {
+    public Board(int height, int width, int exposure, int overcrowd, double lifeLikelihoodOfCell) {
         this.height = height;
         this.width = width;
         this.exposure = exposure;
@@ -63,7 +63,26 @@ public class Board {
         }
     }
     public String generateBoardString() {
-        return null;
+        String boardString = "";
+        for (int row = 0; row < height; row++) {
+            
+            for (int col = 0; col < width; col++) {
+                
+                if (cells[row][col].isAlive()) {
+                    boardString += "*";
+                } else {
+                    boardString += " ";
+                }
+            }
+            boardString += "\n";
+        }
+        
+        for (int col = 0; col < width; col++) {
+            boardString += "-";
+        }
+        
+        boardString += "\n";
+        return boardString;
     }
     private boolean calculateNextStateOfCell(Cell cell) {
         int numAlive = cell.calculateAliveNeighbors(this);
@@ -75,13 +94,14 @@ public class Board {
             return false;
         }
     } 
-    public void nextState() {
+    public Board nextState() {
         Board newBoard = new Board(height, width, exposure, overcrowd, lifeLikelihoodOfCell);
         for (int row = 0; row < height; row++) {
             for (int col = 0; col < width; col++) {
-                calculateNextStateOfCell(cells[row][col]);
+                newBoard.getCells()[row][col].setAlive(calculateNextStateOfCell(cells[row][col]));
             }
         }
+        return newBoard;
     }
     private static boolean gabbaRayCalculateNextStateOfCell(int row, int col) {
         return false;
@@ -91,6 +111,10 @@ public class Board {
     }
     private Board meteorStrike() {
         return this;
+    }
+    
+    public Board copyBoard(Board board) {
+        
     }
     
 }

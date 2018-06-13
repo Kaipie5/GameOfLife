@@ -17,12 +17,20 @@ public class Board {
     private final int width;
     private final int exposure;
     private final int overcrowd;
+    private final int lifeLikelihoodOfCell;
     
-    public Board(int height, int width, int exposure, int overcrowd) {
+    public Board(int height, int width, int exposure, int overcrowd, int lifeLikelihoodOfCell) {
         this.height = height;
         this.width = width;
         this.exposure = exposure;
         this.overcrowd = overcrowd;
+        this.lifeLikelihoodOfCell = lifeLikelihoodOfCell;
+        for (int row = 0; row < height; row++) {
+            for (int col = 0; col < width; col++) {
+                Coordinate c = new Coordinate(row, col);
+                cells[row][col] = new Cell(c, height, width);
+            }
+        }
     }
 
     public Cell[][] getCells() {
@@ -42,7 +50,17 @@ public class Board {
     }
     
     public void initBoard() {
-        
+        for (int row = 0; row < height; row++){
+            
+            for (int col = 0; col < width; col++) {
+                
+                double rand = Math.random();
+                
+                if (rand <= lifeLikelihoodOfCell) {
+                    cells[row][col].bringToLife();
+                }
+            }
+        }
     }
     public String generateBoardString() {
         return null;
@@ -58,6 +76,7 @@ public class Board {
         }
     } 
     public void nextState() {
+        Board newBoard = new Board(height, width, exposure, overcrowd, lifeLikelihoodOfCell);
         for (int row = 0; row < height; row++) {
             for (int col = 0; col < width; col++) {
                 calculateNextStateOfCell(cells[row][col]);

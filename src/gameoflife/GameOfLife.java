@@ -32,9 +32,10 @@ public class GameOfLife {
 
     public static void main(String[] args) {
         
-        boolean[][] board = initBoard();
-        boolean[][] previousBoard = board;
-        boolean[][] antepenultimateBoard = board;
+        Board board = new Board(BOARD_HEIGHT, BOARD_WIDTH, EXPOSURE, OVERCROWD, LIFE_LIKELIHOOD_FOR_CELL);
+        board.initBoard();
+        boolean[][] previousBoard = null;
+        boolean[][] antepenultimateBoard = null;
         
         int stabilityTimer = 0;
         boolean notStable = true;
@@ -50,7 +51,7 @@ public class GameOfLife {
             }
             
             antepenultimateBoard = previousBoard;
-            previousBoard = board;
+            previousBoard = null;
             board = calculateNextState(board);
             
             if (GABBA_RAY_ON) {

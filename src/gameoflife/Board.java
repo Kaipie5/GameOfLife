@@ -5,7 +5,6 @@
  */
 package gameoflife;
 
-import java.util.ArrayList;
 
 /**
  *
@@ -18,17 +17,22 @@ public class Board {
     private final int exposure;
     private final int overcrowd;
     private final double lifeLikelihoodOfCell;
+    private final double gabbaRayChance;
+    private final int meteorSize;
     
-    public Board(int height, int width, int exposure, int overcrowd, double lifeLikelihoodOfCell) {
+    public Board(int height, int width, int exposure, int overcrowd, double lifeLikelihoodOfCell, double gabbaRayChance, int meteorSize) {
         this.height = height;
         this.width = width;
         this.exposure = exposure;
         this.overcrowd = overcrowd;
         this.lifeLikelihoodOfCell = lifeLikelihoodOfCell;
+        this.gabbaRayChance = gabbaRayChance;
+        this.meteorSize = meteorSize;
+        cells = new Cell[height][width];
         for (int row = 0; row < height; row++) {
             for (int col = 0; col < width; col++) {
                 Coordinate c = new Coordinate(row, col);
-                cells[row][col] = new Cell(c, height, width);
+                cells[row][col] =  new Cell(c, height, width);
             }
         }
     }
@@ -62,7 +66,7 @@ public class Board {
             }
         }
     }
-    public String generateBoardString() {
+    public String toString() {
         String boardString = "";
         for (int row = 0; row < height; row++) {
             
@@ -95,7 +99,7 @@ public class Board {
         }
     } 
     public Board calculateNextState() {
-        Board newBoard = new Board(height, width, exposure, overcrowd, lifeLikelihoodOfCell);
+        Board newBoard = new Board(height, width, exposure, overcrowd, lifeLikelihoodOfCell, gabbaRayChance, meteorSize);
         for (int row = 0; row < height; row++) {
             for (int col = 0; col < width; col++) {
                 newBoard.getCells()[row][col].setAlive(calculateNextStateOfCell(cells[row][col]));
@@ -103,18 +107,62 @@ public class Board {
         }
         return newBoard;
     }
-    private static boolean gabbaRayCalculateNextStateOfCell(int row, int col) {
-        return false;
+    private boolean gabbaRayCalculateNextStateOfCell(int row, int col) {
+        double rand = Math.random();
+        if (rand <= gabbaRayChance && !cells[row][col].isAlive()) {
+            return true;
+        } else {
+            return cells[row][col].isAlive();
+        }
     }
-    private Board gabbaRay() {
-        return this;
+    public void gabbaRay() {
+
+        Cell[][] newState = cells;
+        for (int row = 0; row < height; row++) {
+            
+            for (int col = 0; col < width; col++) {
+                
+                boolean aliveOrDead = gabbaRayCalculateNextStateOfCell(row, col);
+                newState[row][col].setAlive(aliveOrDead);
+                
+            }   
+        }
+        cells = newState;
     }
-    private Board meteorStrike() {
-        return this;
+    public void meteorStrike() {
+        Cell[][] meteoredBoard = cells;
+        int meteorRow = (int)(Math.random() * ((height) + 1));
+        int meteorCol = (int)(Math.random() * ((width) + 1));
+        for (int row = meteorRow - meteorSize; row <= meteorRow + meteorSize; row++) {
+            for (int col = meteorCol - meteorSize; col <= meteorCol + meteorSize; col++) {
+                if (row >= 0 && col >= 0 && row < height && col < width) {
+                    
+                    meteoredBoard[row][col].die();
+                }  
+            }
+        }
+        cells = meteoredBoard;
     }
     
-    public Board copyBoard(Board board) {
-        return null;
+    public void copyBoard(Board board) {
+        for (int row = 0; row < height; row++) {
+            for (int col = 0; col < width; col++) {
+                
+                this.getCells()[row][col].setAlive(board.getCells()[row][col].isAlive());
+                
+            }
+        }
+    }
+    
+    public boolean equals(Board board) {
+        for (int row = 0; row < height; row++) {
+            for (int col = 0; col < width; col++) {
+                if (!this.getCells()[row][col].isAlive() == board.getCells()[row][col].isAlive()) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
     
 }

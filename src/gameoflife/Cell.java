@@ -51,12 +51,18 @@ public class Cell {
     private void populateNeighbors() {
         for (int row = -1; row <= 1; row++) {
             for (int col = -1; col <= 1; col++) {
+                Coordinate c = new Coordinate(location.getXCoord() + row, location.getYCoord() + col);
                 
-                if (row == location.getXCoord() && col == location.getYCoord()) continue;
-                if ((location.getXCoord() + row) < 0 || (location.getYCoord() + col) < 0 
-                        || (location.getXCoord() + row) >  height|| (location.getYCoord() + col) > width) continue;
+                if (location.equals(c)) {
+                    
+                } else if ((location.getXCoord() + row) < 0 || (location.getYCoord() + col) < 0 
+                        || (location.getXCoord() + row) >=  height|| (location.getYCoord() + col) >= width) {
+                    
+                }else {
+                    neighbors.add(c);
+                }
                 
-                neighbors.add(new Coordinate(location.getXCoord() + row, location.getYCoord() + col));
+                
             }
         }
     }
@@ -69,6 +75,18 @@ public class Cell {
             }
         }
         return numAlive;
+    }
+    
+    public ArrayList<Coordinate> getNeighbors() {
+        return neighbors;
+    }
+    public boolean equals(Cell cell) {
+        if (this.getLocation().getXCoord() == cell.getLocation().getXCoord() 
+                && this.getLocation().getYCoord() == cell.getLocation().getYCoord()) {
+            return true;
+        } else {
+            return false;
+        }
     }
     
 }

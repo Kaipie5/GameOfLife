@@ -32,6 +32,7 @@ public class GameOfLife {
     public GameOfLife(int BOARD_HEIGHT, int BOARD_WIDTH, double LIFE_LIKELIHOOD_FOR_CELL, 
             int EXPOSURE, int OVERCROWD, int PAUSE_MILLIS, double GABBA_RAY_CHANCE, 
             boolean GABBA_RAY_ON, double METEOR_CHANCE, boolean METEOR_ON, int METEOR_SIZE) {
+        
         this.BOARD_HEIGHT = BOARD_HEIGHT;
         this.BOARD_WIDTH = BOARD_WIDTH;
         this.EXPOSURE = EXPOSURE;
@@ -46,14 +47,21 @@ public class GameOfLife {
         
     }
     public void run() {
-    Board board = new Board(BOARD_HEIGHT, BOARD_WIDTH, EXPOSURE, OVERCROWD, LIFE_LIKELIHOOD_FOR_CELL, GABBA_RAY_CHANCE, METEOR_SIZE);
+        
+        Board board = new Board(BOARD_HEIGHT, BOARD_WIDTH, EXPOSURE, OVERCROWD, 
+                LIFE_LIKELIHOOD_FOR_CELL, GABBA_RAY_CHANCE, METEOR_SIZE);
         board.initBoard();
         
-        Board previousBoard = new Board(BOARD_HEIGHT, BOARD_WIDTH, EXPOSURE, OVERCROWD, LIFE_LIKELIHOOD_FOR_CELL, GABBA_RAY_CHANCE, METEOR_SIZE);
+        Board previousBoard = new Board(BOARD_HEIGHT, BOARD_WIDTH, EXPOSURE, OVERCROWD,
+                LIFE_LIKELIHOOD_FOR_CELL, GABBA_RAY_CHANCE, METEOR_SIZE);
         previousBoard.copyBoard(board);
-        Board antepenultimateBoard = new Board(BOARD_HEIGHT, BOARD_WIDTH, EXPOSURE, OVERCROWD, LIFE_LIKELIHOOD_FOR_CELL, GABBA_RAY_CHANCE, METEOR_SIZE);
+        
+        Board antepenultimateBoard = new Board(BOARD_HEIGHT, BOARD_WIDTH, EXPOSURE, OVERCROWD,
+                LIFE_LIKELIHOOD_FOR_CELL, GABBA_RAY_CHANCE, METEOR_SIZE);
         antepenultimateBoard.copyBoard(board);
-        Board anteAntepenultimateBoard = new Board(BOARD_HEIGHT, BOARD_WIDTH, EXPOSURE, OVERCROWD, LIFE_LIKELIHOOD_FOR_CELL, GABBA_RAY_CHANCE, METEOR_SIZE);
+        
+        Board anteAntepenultimateBoard = new Board(BOARD_HEIGHT, BOARD_WIDTH, EXPOSURE, OVERCROWD,
+                LIFE_LIKELIHOOD_FOR_CELL, GABBA_RAY_CHANCE, METEOR_SIZE);
         anteAntepenultimateBoard.copyBoard(board);
         
         int stabilityTimer = 0;
@@ -78,7 +86,7 @@ public class GameOfLife {
             }
             
             double rand = Math.random();
-            if (rand <= METEOR_CHANCE) {
+            if (rand <= METEOR_CHANCE && METEOR_ON) {
                 System.out.println("METEORSTRIKE");
                 board.meteorStrike();
             }

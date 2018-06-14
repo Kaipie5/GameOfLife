@@ -5,7 +5,6 @@
  */
 package gameoflife;
 
-import java.util.*;
 
 /**
  *

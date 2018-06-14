@@ -20,7 +20,9 @@ public class Board {
     private final double gabbaRayChance;
     private final int meteorSize;
     
-    public Board(int height, int width, int exposure, int overcrowd, double lifeLikelihoodOfCell, double gabbaRayChance, int meteorSize) {
+    public Board(int height, int width, int exposure, int overcrowd, double lifeLikelihoodOfCell,
+            double gabbaRayChance, int meteorSize) {
+        
         this.height = height;
         this.width = width;
         this.exposure = exposure;
@@ -28,6 +30,7 @@ public class Board {
         this.lifeLikelihoodOfCell = lifeLikelihoodOfCell;
         this.gabbaRayChance = gabbaRayChance;
         this.meteorSize = meteorSize;
+        
         cells = new Cell[height][width];
         for (int row = 0; row < height; row++) {
             for (int col = 0; col < width; col++) {
@@ -89,7 +92,9 @@ public class Board {
         return boardString;
     }
     private boolean calculateNextStateOfCell(Cell cell) {
+        
         int numAlive = cell.calculateAliveNeighbors(this);
+        
         if (numAlive == overcrowd && !cell.isAlive()) {
             return true;
         } else if (numAlive >= exposure && numAlive <= overcrowd && cell.isAlive()) {
@@ -99,21 +104,30 @@ public class Board {
         }
     } 
     public Board calculateNextState() {
-        Board newBoard = new Board(height, width, exposure, overcrowd, lifeLikelihoodOfCell, gabbaRayChance, meteorSize);
+        Board newBoard = new Board(height, width, exposure, overcrowd, 
+                lifeLikelihoodOfCell, gabbaRayChance, meteorSize);
+        
         for (int row = 0; row < height; row++) {
+            
             for (int col = 0; col < width; col++) {
+                
                 newBoard.getCells()[row][col].setAlive(calculateNextStateOfCell(cells[row][col]));
+                
             }
         }
+        
         return newBoard;
+        
     }
     private boolean gabbaRayCalculateNextStateOfCell(int row, int col) {
+        
         double rand = Math.random();
         if (rand <= gabbaRayChance && !cells[row][col].isAlive()) {
             return true;
         } else {
             return cells[row][col].isAlive();
         }
+        
     }
     public void gabbaRay() {
 
@@ -134,10 +148,13 @@ public class Board {
         int meteorRow = (int)(Math.random() * ((height) + 1));
         int meteorCol = (int)(Math.random() * ((width) + 1));
         for (int row = meteorRow - meteorSize; row <= meteorRow + meteorSize; row++) {
+            
             for (int col = meteorCol - meteorSize; col <= meteorCol + meteorSize; col++) {
+                
                 if (row >= 0 && col >= 0 && row < height && col < width) {
                     
                     meteoredBoard[row][col].die();
+                    
                 }  
             }
         }
@@ -146,6 +163,7 @@ public class Board {
     
     public void copyBoard(Board board) {
         for (int row = 0; row < height; row++) {
+            
             for (int col = 0; col < width; col++) {
                 
                 this.getCells()[row][col].setAlive(board.getCells()[row][col].isAlive());
@@ -156,9 +174,13 @@ public class Board {
     
     public boolean equals(Board board) {
         for (int row = 0; row < height; row++) {
+            
             for (int col = 0; col < width; col++) {
+                
                 if (!this.getCells()[row][col].isAlive() == board.getCells()[row][col].isAlive()) {
+                    
                     return false;
+                    
                 }
             }
         }

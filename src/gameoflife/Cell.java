@@ -50,7 +50,9 @@ public class Cell {
     
     private void populateNeighbors() {
         for (int row = -1; row <= 1; row++) {
+            
             for (int col = -1; col <= 1; col++) {
+                
                 Coordinate c = new Coordinate(location.getXCoord() + row, location.getYCoord() + col);
                 
                 if (location.equals(c)) {
@@ -60,9 +62,7 @@ public class Cell {
                     
                 }else {
                     neighbors.add(c);
-                }
-                
-                
+                }                   
             }
         }
     }
@@ -70,9 +70,11 @@ public class Cell {
     public int calculateAliveNeighbors(Board board) { 
         int numAlive = 0;
         for (int index = 0; index < neighbors.size(); index++) {
+            
             if (board.getCells()[neighbors.get(index).getXCoord()][neighbors.get(index).getYCoord()].isAlive()) {
                 numAlive++;
             }
+            
         }
         return numAlive;
     }
@@ -81,12 +83,14 @@ public class Cell {
         return neighbors;
     }
     public boolean equals(Cell cell) {
+        
         if (this.getLocation().getXCoord() == cell.getLocation().getXCoord() 
                 && this.getLocation().getYCoord() == cell.getLocation().getYCoord()) {
             return true;
         } else {
             return false;
         }
+        
     }
     
 }

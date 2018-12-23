@@ -1,0 +1,2 @@
+# GameOfLife
+A Coding project to practice fundamentals of Java. This project "simulates" life in a micro scale by following a specific algorithm which allows cells to come to life or to die in each step. Each step is printed to console creating the appearance of life living and dying through generations. There are also options to add on this algorithm by introducing cosmic rays which randomly create life or meteros which wipe out life in certain parts of the board.
